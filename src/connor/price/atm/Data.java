@@ -27,8 +27,8 @@ public class Data {
 		FileWriter fr = (new FileWriter(file));
 		try {
 			fr.write(json.toJSONString());
-			System.out.println("Successfully Copied JSON Object to File...");
-			System.out.println("\nJSON Object: " + json);
+//			System.out.println("Successfully Copied JSON Object to File...");
+//			System.out.println("\nJSON Object: " + json);
 		} catch (IOException e) {
 	          e.printStackTrace();
 	    }finally {

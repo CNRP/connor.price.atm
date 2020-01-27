@@ -2,14 +2,8 @@ package connor.price.atm;
 
 import java.util.Scanner;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -51,13 +45,8 @@ public class Main {
 	}
 
 	public static void loggedIn() throws IOException{
-		System.out.println("\n\n\n\n\n\n\n\n");
-		System.out.println("Main Menu");
-		System.out.println("		1 - View Balance");
-		System.out.println("		2 - Withdraw Cash");
-		System.out.println("		3 - Deposit Funds");
-		System.out.println("		4 - Exit");
-		System.out.print("				Enter Your Choice: ");
+		Screen.out("\n\n\n\n\n\n\n\nMain Menu\n		1 - View Balance\n		2 - Withdraw Cash\n		3 - Deposit Funds\n		4 - Exit\n				Enter Your Choice: ");
+		
 		String choice = s.nextLine();
 		switch (choice) {
 			case "1":
@@ -77,14 +66,9 @@ public class Main {
 	
 	@SuppressWarnings("unchecked")
 	public static void withdrawMenu() throws IOException{
-		System.out.println("\n\n\n\n\n\n\n\n");
 		int amount = 0;
 		
-		System.out.println("Withdraw Menu");
-		System.out.println("	  1 - £20     4 - £100");
-		System.out.println("	  2 - £40     5 - £200");
-		System.out.println("	  3 - £60     6 - Cancel");
-		System.out.print("				Enter Your Choice: ");
+		Screen.out("\n\n\n\n\n\n\n\nWithdraw Menu\n	  1 - £20     4 - £100\n	  2 - £40     5 - £200\n	  3 - £60     6 - Cancel\n				Enter Your Choice: ");
 
 		String choice = s.nextLine();
 		
@@ -117,28 +101,45 @@ public class Main {
 	        if(account.get("account-no").toString().equals(loggedIn)) {
 	        	
 	        	Double balance = (Double) account.get("balance");
-	        	account.put("balance", balance-amount);
+	        	if(!(balance - amount < 0)) {
+	        		account.put("balance", balance-amount);
+	        		Screen.out("\n\n\n\n\n\n\n\nTransaction Succesful\n\n	  1 - YES     2 - NO\n");
+	        	}else {
+	        		
+	        		Screen.out("\n\n\n\n\n\n\n\nInsufficient Funds\n\n	  1 - YES     2 - NO\n");
+	        		break;
+	        	}
 	        	Data.setJson();
 	    		
 	        	break;
 	        }
 	    }
+
+	    
+	    Screen.out("Do you wish to make another transaction: ");
+		choice = s.nextLine();
 		
+		switch (choice) {
+		case "1":
+			loggedIn();
+			break;
+		case "2":
+			logIn();
+			break;
+		default: 
+			logIn();
+			break;
+		}
 	} 
 	
 	public static void viewBalance() throws IOException{
-		System.out.println("\n\n\n\n\n\n\n\n");
 	    for (Object o : Data.json) {
 	        JSONObject account = (JSONObject) o;
 	        if(account.get("account-no").toString().equals(loggedIn)) {
 	        	Double balance = (Double) account.get("balance");
-	        	
-	        	System.out.println("");
-	        	System.out.println("Your account balance is: "+balance);
-	        	System.out.println("\n");
-	        	System.out.println("	  1 - YES     2 - NO");
-	        	System.out.println("\n");
-	    		System.out.print("Do you wish to make another transaction: ");
+
+	        	Screen.out("\n\n\n\n\n\n\n\nYour account balance is: "+balance+"\n\n	  1 - YES     2 - NO\n\nDo you wish to make another transaction: ");
+
 	    		String choice = s.nextLine();
 	    		
 	    		switch (choice) {
@@ -149,7 +150,7 @@ public class Main {
 					logIn();
 					break;
 				default: 
-					
+					logIn();
 					break;
 	    		}
 	        	break;
